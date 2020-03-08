@@ -1,0 +1,83 @@
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class DateUtils_Mjj {
+
+	/**
+	 * 在当前时间上增加 days天
+	 * 
+	 * @param date
+	 * @param days
+	 * @return
+	 */
+	public static Date addDateForDay(Date date, int days) {
+		Calendar calendar = Calendar.getInstance();
+		// 设置当前时间为传入的参数
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, days);
+		calendar.setTimeInMillis(10000);
+		date = calendar.getTime();
+		return date;
+	}
+
+	/**
+	 * 在当前时间上增加seconds秒钟
+	 * 
+	 * @param date
+	 * @param seconds
+	 * @return
+	 */
+	public static Date addSeconds(Date date, int seconds) {
+		return new Date(date.getTime() + 1000*seconds);
+	}
+	
+	/**
+	 * 在当前时间上减去seconds秒钟
+	 * @param date
+	 * @param seconds
+	 * @return
+	 */
+	public static Date subtractSeconds(Date date,int seconds) {
+		return new Date(date.getTime() - 1000*seconds);
+	}
+	/**
+	 * 格式化时间 格式为 yyyy-MM-dd HH:mm:ss
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String timeFormMate(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = sdf.format(date);
+		return time;
+	}
+
+	/**
+	 * 将String类型的时间转换成Date类型
+	 * @param dateStr
+	 * @return 传入时间没有时分秒就不会返回带时分秒的Date，否则返回带有HH:mm:ss类型的Date
+	 * @throws ParseException
+	 */
+	public static Date stringToDate(String dateStr) throws ParseException {
+		//包含时分秒
+		SimpleDateFormat sdfDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		//不包含时分秒
+		SimpleDateFormat sdfDateFormat2=new SimpleDateFormat("yyyy-MM-dd");
+		Date date;
+		if(dateStr.length()<12) {
+			date=sdfDateFormat2.parse(dateStr);
+		}else {
+			date=sdfDateFormat.parse(dateStr);
+		}
+		return date;
+	}
+	
+	
+	public static void main(String[] args) throws ParseException {
+		System.out.println(timeFormMate(subtractSeconds(new Date(),10)));
+	}
+}
