@@ -1,6 +1,9 @@
- 关于分页查询优化：
+一) 关于分页查询优化：
  利用索引，给关键字段加索引(ID)
  优化前SQL:SELECT * FROM member ORDER BY last_active LIMIT 50,5 
 
 优化后SQL:SELECT * FROM member INNER JOIN (SELECT member_id FROM member ORDER BY last_active LIMIT 50,5) USING (member_id)
 注：USING --> 相当于 inner join   里面的  on，如果两个表的条件字段是一样的，就可以用USING(ID) 如果不一样 就只能 on userId=Id
+
+二) union和union all
+union用于两张表相同字段的合集，但相同值不会保留，union all可以保留相同值
