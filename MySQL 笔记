@@ -1,5 +1,5 @@
  关于分页查询优化：
- 
+ 利用索引，给关键字段加索引(ID)
  优化前SQL:SELECT * FROM member ORDER BY last_active LIMIT 50,5 
 
 优化后SQL:SELECT * FROM member INNER JOIN (SELECT member_id FROM member ORDER BY last_active LIMIT 50,5) USING (member_id)
