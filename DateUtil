@@ -19,7 +19,6 @@ public class DateUtils_Mjj {
 		// 设置当前时间为传入的参数
 		calendar.setTime(date);
 		calendar.add(Calendar.DAY_OF_MONTH, days);
-		calendar.setTimeInMillis(10000);
 		date = calendar.getTime();
 		return date;
 	}
