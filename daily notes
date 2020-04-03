@@ -1,0 +1,2 @@
+Q--springboot测试类无法注入mapper
+A--需要@SpringBootTest(classes=Application.class)，application.class为项目的启动类，不是测试类的主类。
