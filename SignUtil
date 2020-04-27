@@ -1,0 +1,54 @@
+//生成签名
+	public static String generateSign(WholeWorldPo wholeWorldPo) {
+		Map<String,String> map=MapUtil.objToMap(wholeWorldPo);
+		List<Map.Entry<String, String>> infoIds = new ArrayList<Map.Entry<String, String>>(map.entrySet());
+        // 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
+        Collections.sort(infoIds, new Comparator<Map.Entry<String, String>>() {
+            public int compare(Map.Entry<String, String> o1, Map.Entry<String, String> o2) {
+                return (o1.getKey()).toString().compareTo(o2.getKey());
+            }
+        });
+        //字符串拼接
+		StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> item : infoIds) {
+            if (item.getKey() != null || item.getKey() != "") {
+                String key = item.getKey();
+                String val = (String) item.getValue();
+                if (!(val == "" || val == null)) {
+                    sb.append(key + "=" + val + "&");
+                }
+            }
+        }
+        //SIGN_KEY 秘钥
+		String sign=sb.toString()+"key="+SIGN_KEY;
+    //拼接好的字符串转秘钥
+		sign=MD5Tool.MD5(sign).toUpperCase();
+		return sign;
+		
+	}
+  
+  /**
+  *  对象转Map
+  **/
+  public static Map<String, String> objToMap(Object obj) {
+		Map<String, String> map = new HashMap<String, String>();
+		Field[] fields = obj.getClass().getDeclaredFields();	// 获取f对象对应类中的所有属性域
+		for (int i = 0, len = fields.length; i < len; i++) {
+			String varName = fields[i].getName();
+			varName = varName.toLowerCase();					// 将key置为小写，默认为对象的属性
+			try {
+				boolean accessFlag = fields[i].isAccessible();	// 获取原来的访问控制权限
+				fields[i].setAccessible(true);					// 修改访问控制权限
+				Object o = fields[i].get(obj);					// 获取在对象f中属性fields[i]对应的对象中的变量
+				if (o != null){
+					map.put(varName, o.toString());
+				}
+				fields[i].setAccessible(accessFlag);			// 恢复访问控制权限
+			} catch (IllegalArgumentException ex) {
+				ex.printStackTrace();
+			} catch (IllegalAccessException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return map;
+	}
