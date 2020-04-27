@@ -1,0 +1,50 @@
+/*
+	 * 合成二维码和图片  传入二维码字节流
+	 */
+	public static final byte[] combineCodeAndPicToFile(byte[] qrCode) {
+		byte[] combinedPic = null;
+		try {
+			// 传入二维码图片的Byte字节流转成输入流
+			ByteArrayInputStream in = new ByteArrayInputStream(qrCode);
+			BufferedImage code = null;
+			// 把字节输入流转成BufferedImage
+			code = ImageIO.read(in);
+
+			// 读取文件  读取项目ClassPath下的文件
+			ClassPathResource classPathResource = new ClassPathResource("poster.jpg");
+			// 把图片转成BufferedImage
+			BufferedImage poster = ImageIO.read(classPathResource.getFile());
+			/*
+			 * //合成两个文件时使用 BufferedImage small = ImageIO.read(new File(fillPicPath));
+			 */
+			Graphics2D g = poster.createGraphics();
+
+			// 二维码或小图在大图的左上角坐标
+			int x = (poster.getWidth() - code.getWidth()) / 2;
+			// int y = (big.getHeight() - small.getHeight()) / 2;
+			int y = (poster.getHeight() - code.getHeight() - 500);
+			g.drawImage(code, x, y, code.getWidth(), code.getHeight(), null);
+			g.dispose();
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			ImageIO.write(poster, "png", byteArrayOutputStream);
+			combinedPic = byteArrayOutputStream.toByteArray();
+			return combinedPic;
+			// 为了保证大图背景不变色，formatName必须为"png"
+			// ImageIO.write(poster, "png", new File("D:/combinePic.jpg"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return combinedPic;
+	}
+
+
+
+	//生成二维码  返回字节流 不保存到本地
+	public static byte[] generateQrCodeImg(String text) throws WriterException, IOException {
+		QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, 250, 250);
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+        byte[] pngData = pngOutputStream.toByteArray(); 
+        return pngData;
+	}
