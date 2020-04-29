@@ -7,3 +7,40 @@
 
 二) union和union all
 union用于两张表相同字段的合集，但相同值不会保留，union all可以保留相同值
+
+
+oracle批量插入
+<insert id="batchInsertUserDecimal" parameterType="java.util.List" useGeneratedKeys="false">
+insert into CTDECIMAL(firmid,decemical,p8decemical,ztdecemical,status,weekday)
+<foreach collection="list" index="index" item="list" open="(" close=")" separator="union">
+select
+#{list.firmid,jdbcType=VARCHAR},
+#{list.decemical,jdbcType=NUMERIC},
+#{list.p8Decemical,jdbcType=NUMERIC},
+#{list.ztDecemical,jdbcType=NUMERIC},
+#{list.status,jdbcType=NUMERIC},
+#{list.weekday,jdbcType=NUMERIC}
+from dual
+</foreach>
+</insert>
+
+
+oracle 批量更新
+
+<update id="batchUpdateUserDecimal" parameterType="java.util.List">
+<foreach collection="list" index="index" item="list" open="begin" close=";end;" separator=";">
+update CTDECIMAL
+<set>
+decemical=#{list.decemical,jdbcType=NUMERIC},
+p8decemical=#{list.p8Decemical,jdbcType=NUMERIC},
+ztdecemical=#{list.ztDecemical,jdbcType=NUMERIC}
+</set>
+<where>
+firmid=#{list.firmid,jdbcType=VARCHAR}
+and
+status=#{list.status,jdbcType=VARCHAR}
+and
+weekday = #{list.weekday,jdbcType=NUMERIC}
+</where>
+</foreach>
+</update>
