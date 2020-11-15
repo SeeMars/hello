@@ -2,5 +2,6 @@ Integer[] array={1,8,5,7,9};
 List<Integer> list=Arrays.asList(array);
 //获取集合最小值    a>b 获取最大值
 Integer tem=list.stream().reduce((a,b)-> a<b ? a:b).get();
-//从小到大排序
+
+//从小到大排序  Comparato.reverseOrder() 倒叙排列
 list.stream().sorted(Comparator.comparing(Integer::intValue)).collect(Collectors.toList());
