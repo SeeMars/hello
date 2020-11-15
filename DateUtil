@@ -74,7 +74,7 @@ public class DateUtils_Mjj {
 		}
 		return date;
 	}
-	
+	1
 	
 	public static void main(String[] args) throws ParseException {
 		System.out.println(timeFormMate(subtractSeconds(new Date(),10)));
