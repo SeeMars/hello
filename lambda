@@ -5,3 +5,21 @@ Integer tem=list.stream().reduce((a,b)-> a<b ? a:b).get();
 
 //从小到大排序  Comparato.reverseOrder() 倒叙排列
 list.stream().sorted(Comparator.comparing(Integer::intValue)).collect(Collectors.toList());
+
+        //根据名称正序排列
+        List<User> collect = uList.stream().sorted(Comparator.comparing(User::getName)).collect(Collectors.toList());
+		//根据名称倒序排列
+        List<User> collect = uList.stream().sorted(Comparator.comparing(User::getName).reversed()).collect(Collectors.toList());
+		
+		//获取年龄最大的用户
+		User user=uList.stream().max(Comparator.comparing(User::getAge)).get();
+		
+		过滤对象 name不为null的，年龄大于5的
+        List<User> collect1 = uList.stream().filter(u -> Objects.nonNull(u.getName())).filter(u -> u.getAge() > 5).collect(Collectors.toList());
+		
+		集合转对象  u->u 取对象为value  u->age 取age为value   u->u.getName() 取name为key     k1,k2 重复key的情况下用k2那个value,LinkedhashMap::new指定map的实现类型
+		Map<String,User> map=uList.stream().collect(Collectors.toMap(u-> u.getName(),u->u),(k1,k2)->k2),LinkedhashMap::new);
+		//提取集合对象里某一个属性
+		list<String> list=List<user>.stream().map(User::getName).collect(Collectors.toList())
+		//提取集合对象里某一个属性 并去重
+		list<String> list=List<user>.stream().map(User::getName).distinct().collect(Collectors.toList())
