@@ -23,3 +23,7 @@ list.stream().sorted(Comparator.comparing(Integer::intValue)).collect(Collectors
 		list<String> list=List<user>.stream().map(User::getName).collect(Collectors.toList())
 		//提取集合对象里某一个属性 并去重
 		list<String> list=List<user>.stream().map(User::getName).distinct().collect(Collectors.toList())
+		
+		Map<String,Long> countMap=list.stream().collect(Collectors.groupingBy(obj->obj.getString(),Collectors.counting()));
+		
+		Map<String,Set<String>> setMap=list.stream().collect(Collectors.groupingBy(obj->obj.getString(),HashMap::new,Collectors.mapping(Obj::get..(),Collectors.toSet());
